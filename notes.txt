@@ -23,3 +23,24 @@ create table product(
     size varchar(10),
     constraint unique_cpf_client unique (CPF)
 );
+
+create table payment(
+    idclient int,
+    idPayment int,
+    typePayment enum('Boleto','Cartão','Dois cartões'),
+    limitAvailable float,
+    primary key(idClient, id_payment)
+);
+
+create table orders(
+    idOrder int auto_increment primary key,
+    idOrderClient int,
+    orderStatus enum('Cancelado', 'Confirmado', 'Em processamento') not null,
+    orderDescription varchar(255),
+    sendValue float default 10,
+    paymentCash bool default false,
+    -- idPayment null
+    constraint fk_orders_client foreign key (idOrderClient) references clients(idClient)
+);
+
+-- na fk está clients - mas a tabela chama client
