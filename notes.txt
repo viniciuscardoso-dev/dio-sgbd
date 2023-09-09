@@ -11,6 +11,8 @@ create table client(
     constraint unique_cpf_client unique (CPF)
 );
 
+alter table client auto_increment=1;
+
 create table product(
     idProduct int auto_increment primary key,
     Pname varchar(10),
@@ -66,9 +68,6 @@ create table seller(
     constraint unique_cpf_seller unique (CPF)
 );
 
--- juntar as duas tabelas seller e supplier
-
-
 create table productSeller(
     idPseller int,
     idPproduct int,
@@ -106,3 +105,78 @@ create table productSupplier(
     constraint fk_product_supplier_supplier foreign key (idPsSupplier) references supplier(idSupplier),
     constraint fk_product_supplier_product foreign key (idPsProduct) references product(idProduct)
 );
+
+
+-- INSERÇÃO
+
+-- Inserir clientes
+INSERT INTO client (Fname, Minit, Lname, CPF, Address)
+VALUES
+    ('João', 'A', 'Silva', '12345678901', 'Rua A, 123'),
+    ('Maria', 'B', 'Santos', '23456789012', 'Avenida B, 456'),
+    ('Pedro', 'C', 'Oliveira', '34567890123', 'Travessa C, 789');
+
+-- Inserir produtos
+INSERT INTO product (Pname, classification_kids, category, avaliation, size)
+VALUES
+    ('Smartphone', 0, 'Eletrônico', 4.5, '5.5 inch'),
+    ('Camiseta', 1, 'Vestimenta', 4.0, 'M'),
+    ('Brinquedo', 1, 'Brinquedos', 4.8, 'N/A'),
+    ('Arroz', 0, 'Alimentos', 4.9, '1kg'),
+    ('Sofá', 0, 'Móveis', 4.7, '3-seater');
+
+-- Inserir pedidos
+INSERT INTO orders (idOrderClient, orderDescription, sendValue, paymentCash)
+VALUES
+    (1, 'Pedido 1', 20.5, 0),
+    (2, 'Pedido 2', 15.0, 1),
+    (3, 'Pedido 3', 10.0, 0);
+
+-- Inserir localizações de estoque
+INSERT INTO productStorage (storageLocation, quantity)
+VALUES
+    ('Prateleira 1', 50),
+    ('Prateleira 2', 30),
+    ('Estoque Principal', 100);
+
+-- Inserir fornecedores
+INSERT INTO supplier (SocialName, CNPJ, contact)
+VALUES
+    ('Fornecedor A', '12345678901234', '1122334455'),
+    ('Fornecedor B', '23456789012345', '2233445566'),
+    ('Fornecedor C', '34567890123456', '3344556677');
+
+-- Inserir vendedores
+INSERT INTO seller (SocialName, AbstName, CNPJ, CPF, location, contact)
+VALUES
+    ('Vendedor X', 'VX', '12345678901', '123456789', 'Loja X', '9988776655'),
+    ('Vendedor Y', 'VY', '23456789012', '234567890', 'Loja Y', '8877665544'),
+    ('Vendedor Z', 'VZ', '34567890123', '345678901', 'Loja Z', '7766554433');
+
+-- Inserir relação entre produtos e vendedores
+INSERT INTO productSeller (idPseller, idPproduct, prodQuantity)
+VALUES
+    (1, 1, 10),
+    (2, 2, 20),
+    (3, 3, 15);
+
+-- Inserir relação entre produtos e pedidos
+INSERT INTO productOrder (idPOproduct, idPOorder, poQuantity)
+VALUES
+    (1, 1, 5),
+    (2, 1, 3),
+    (3, 2, 2);
+
+-- Inserir relação entre produtos e locais de estoque
+INSERT INTO storageLocation (idLproduct, idLstorage, location)
+VALUES
+    (1, 1, 'Prateleira 1'),
+    (2, 2, 'Prateleira 2'),
+    (3, 3, 'Estoque Principal');
+
+-- Inserir relação entre produtos e fornecedores
+INSERT INTO productSupplier (idPsSupplier, idPsProduct, quantity)
+VALUES
+    (1, 1, 100),
+    (2, 2, 50),
+    (3, 3, 200);
