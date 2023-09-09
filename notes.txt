@@ -17,7 +17,7 @@ create table product(
     idProduct int auto_increment primary key,
     Pname varchar(10),
     classification_kids bool,
-    category enum('Eletrônico','Vestimenta','Brinquedos','Alimetos','Móveis') not null,
+    category enum('Eletrônico','Vestimenta','Brinquedos','Alimentos','Móveis') not null,
     avaliation float default 0,
     size varchar(10)
 );
@@ -122,8 +122,9 @@ VALUES
     ('Smartphone', 0, 'Eletrônico', 4.5, '5.5 inch'),
     ('Camiseta', 1, 'Vestimenta', 4.0, 'M'),
     ('Brinquedo', 1, 'Brinquedos', 4.8, 'N/A'),
-    ('Arroz', 0, 'Alimentos', 4.9, '1kg'),
+    ('Alimentos', 0, 'Alimentos', 4.9, '1kg'),
     ('Sofá', 0, 'Móveis', 4.7, '3-seater');
+
 
 -- Inserir pedidos
 INSERT INTO orders (idOrderClient, orderDescription, sendValue, paymentCash)
