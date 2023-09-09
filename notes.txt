@@ -1,5 +1,4 @@
-até agora não entendi o que será feito, estou  apenas seguindo os passos a passos da aula.
-
+-- agora eu entendi o que é pra fazer :p
 
 create database eccomerce;
 use eccomerce;
@@ -20,8 +19,7 @@ create table product(
     classification_kids bool,
     category enum('Eletrônico','Vestimenta','Brinquedos','Alimetos','Móveis') not null,
     avaliation float default 0,
-    size varchar(10),
-    constraint unique_cpf_client unique (CPF)
+    size varchar(10)
 );
 
 create table payment(
@@ -35,20 +33,19 @@ create table payment(
 create table orders(
     idOrder int auto_increment primary key,
     idOrderClient int,
-    orderStatus enum('Cancelado', 'Confirmado', 'Em processamento') default 'Em processamento,
+    orderStatus enum('Cancelado', 'Confirmado', 'Em processamento') default 'Em processamento',
     orderDescription varchar(255),
     sendValue float default 10,
     paymentCash bool default false,
-    -- idPayment null
-    constraint fk_orders_client foreign key (idOrderClient) references clients(idClient)
+    constraint fk_orders_client foreign key (idOrderClient) references client(idClient)
 );
 
--- na fk está clients - mas a tabela chama client
+-- idPayment null
 
 create table productStorage(
     idProdStorage int auto_increment primary key,
     storageLocation varchar(255),
-    quantity int default 0,
+    quantity int default 0
 );
 
 create table supplier(
@@ -74,12 +71,31 @@ create table seller(
 -- juntar as duas tabelas seller e supplier
 
 
-create table procuctSeller(
-    idPseller int primary key,
-    idProduct int primary key,
+create table productSeller(
+    idPseller int,
+    idPproduct int,
     prodQuantity int default 1,
-    primary key(idPseller, idProduct),
+    primary key(idPseller, idPproduct),
     constraint fk_product_seller foreign key (idPseller) references seller(idSeller),
-    constraint fk_product_product foreign key (idProduct) references product(idProduct)
+    constraint fk_product_product foreign key (idPproduct) references product(idProduct)
 );
 
+
+create table productOrder(
+    idPOproduct int,
+    idPOorder int,
+    poQuantity int default 1,
+    poStatus enum('Disponível', 'Sem estoque') default 'Disponível',
+    primary key(idPOproduct, idPOorder),
+    constraint fk_product_order_seller foreign key (idPOproduct) references product(idProduct),
+    constraint fk_product_order_product foreign key (idPOorder) references orders(idOrder)
+);
+
+create table storageLocation(
+    idLproduct int,
+    idLstorage int,
+    location varchar(255) not null,
+    primary key(idLproduct, idLstorage),
+    constraint fk_storage_location_product foreign key (idLproduct) references product(idProduct),
+    constraint fk_storage_location_storage foreign key (idLstorage) references productStorage(idProdStorage)
+);
